@@ -15,7 +15,7 @@ const mxgraph = require("mxgraph")({
 });
 
 
-const {mxGraph, mxCodec, mxUtils} = mxgraph;
+const {mxGraph, mxCodec, mxUtils, mxConstants, mxSvgCanvas2D} = mxgraph;
 
 function makeHelloWorld() {
   // Extracted from https://github.com/jgraph/mxgraph/blob/master/javascript/examples/helloworld.html
@@ -49,3 +49,24 @@ function graphToXML(graph) {
 const xml = graphToXML(helloWorldGraph);
 
 fs.writeFileSync('./graph.xml', xml);
+
+function createSvgCanvas(graph) {
+    const svgDoc = mxUtils.createXmlDocument();
+    const root = (svgDoc.createElementNS != null) ? svgDoc.createElementNS(mxConstants.NS_SVG, 'svg') : svgDoc.createElement('svg');
+    if (svgDoc.createElementNS == null) {
+        root.setAttribute('xmlns', mxConstants.NS_SVG);
+        root.setAttribute('xmlns:xlink', mxConstants.NS_XLINK);
+    } else {
+        root.setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:xlink', mxConstants.NS_XLINK);
+    }
+    const bounds = graph.getGraphBounds();
+    root.setAttribute('width', (bounds.x + bounds.width + 4) + 'px');
+    root.setAttribute('height', (bounds.y + bounds.height + 4) + 'px');
+    root.setAttribute('version', '1.1');
+    svgDoc.appendChild(root);
+    const svgCanvas = new mxSvgCanvas2D(root);
+    return svgCanvas;
+}
+const svg = JSON.stringify(createSvgCanvas(helloWorldGraph));
+
+fs.writeFileSync('./graph.svg', svg);
