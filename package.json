@@ -1,0 +1,16 @@
+{
+  "name": "mxgraph-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "James Harris",
+  "license": "ISC",
+  "dependencies": {
+    "jsdom": "^16.4.0",
+    "mxgraph": "^4.2.2",
+    "mxgraph-es6": "github:adrianhdezm/mxgraph-es6"
+  }
+}
